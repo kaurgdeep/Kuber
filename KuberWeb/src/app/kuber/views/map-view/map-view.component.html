@@ -1,0 +1,16 @@
+
+<!-- this creates a google map on the page with the given lat/lng from -->
+<!-- the component as the initial center of the map: -->
+<div class="container">
+    <h1>select your pickup location!</h1>
+    <div class="input-group mb-3">
+        <input type="text" placeholder="Search for Location" autocorrect="off" autocapitalize="off" spellcheck="off"
+            class="form-control" #search [(ngModel)] = "currentAddress">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary">Request Ride</button>
+            </div>
+    </div>
+</div>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="16" (mapClick)="placeMarker($event)">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+</agm-map>
