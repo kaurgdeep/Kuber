@@ -3,3 +3,5 @@
 ################################################################################
 
 /KuberAPI/KuberAPI/obj
+/KuberAPI/KuberAPI/bin/Debug/netcoreapp2.1
+/KuberAPI/.vs
