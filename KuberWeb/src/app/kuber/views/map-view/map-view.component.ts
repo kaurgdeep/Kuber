@@ -9,7 +9,7 @@ import { ViewChild, ElementRef, NgZone } from '@angular/core';
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit {
-  @ViewChild('search', {static: false}) public searchElement: ElementRef;
+  @ViewChild('search', {static: true}) public searchElement: ElementRef;
   lat: number;
   lng: number;
   currentAddress: string;

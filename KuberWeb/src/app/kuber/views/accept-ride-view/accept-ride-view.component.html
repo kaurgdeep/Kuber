@@ -1,0 +1,54 @@
+<div class="container">
+        <ng-container *ngIf="me">
+            Welcome {{me.emailAddress}} (<span class="user-type">{{me.userType}}</span>)
+        </ng-container>
+        <p></p>
+        <ng-container>
+            <agm-map [latitude]='userLocation.latitude'
+                     [longitude]='userLocation.longitude'
+                     [zoom]="15">
+                <agm-circle [latitude]='userLocation.latitude'
+                            [longitude]='userLocation.longitude'
+                            [fillOpacity]="0.075"
+                            [radius]="805"></agm-circle>
+                <agm-marker [latitude]='userLocation.latitude'
+                            [longitude]='userLocation.longitude'></agm-marker>
+                <ng-container *ngIf="rideRequests && rideRequests.length">
+                    <agm-marker *ngFor="let request of rideRequests; let i = index;"
+                                [label]="(i+1)"
+                                [iconUrl]="request === selectedRequest ? '/assets/icons8-street-view-25-sel.png' : '/assets/icons8-street-view-25.png'"
+                                [latitude]="request.fromAddress.latitude"
+                                [longitude]="request.fromAddress.longitude"
+                                (markerClick)="selectRide($event, request)"></agm-marker>
+                </ng-container>
+            </agm-map>
+    
+            <p>
+                Pickup distance (radius): {{radiusMiles}} miles</p>
+            <ng-container *ngIf="rideRequests && rideRequests.length">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Requested</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let request of rideRequests; let i = index;">
+                        <td>{{i + 1}}</td>
+                        <td>{{request.fromAddress.formattedAddress}}</td>
+                        <td>{{request.toAddress.formattedAddress}}</td>
+                        <td>{{request.requested}}</td>
+                        <td><button [disabled]="request !== selectedRequest"
+                                    class="btn btn-primary"
+                                    (click)="acceptRide(request.id)">Accept</button></td>
+                    </tr>
+                </table>
+            </ng-container>
+            <ng-container *ngIf="!rideRequests || !rideRequests.length">
+                <em>No ride requests found near-by.</em>
+            </ng-container>
+        </ng-container>
+    </div>

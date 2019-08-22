@@ -1,0 +1,37 @@
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">{{label}}</label>
+    <div [ngClass]="{'col-sm-6 no-padding-right': showLatLng, 'col-sm-10': !showLatLng}">
+        <input *ngIf="!readOnly" 
+        required type="text" 
+        placeholder="{{placeholder}}" 
+        autocorrect="off"
+        autocapitalize="off" 
+        spellcheck="off" 
+        class="form-control" 
+        name="searchAddress"
+        [(ngModel)]="address.formattedAddress" 
+        #searchAddress>
+        
+        <span *ngIf="readOnly" class="form-control">
+            {{address.formattedAddress}}
+        </span>
+    </div>
+    <ng-container *ngIf="showLatLng">
+        <div class="col-sm-2 no-padding-left no-padding-right">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Lat</span>
+                </div>
+                <span class="form-control hide-overflow">{{address.latitude}}</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding-left">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Lng</span>
+                </div>
+                <span class="form-control hide-overflow">{{address.longitude}}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,57 @@
+<div class="container">
+        <ng-container *ngIf="me">
+            Welcome {{me.emailAddress}} (<span class="user-type">{{me.userType}}</span>)
+        </ng-container>
+        <p></p>
+        <ng-container>
+            <form #form="ngForm">
+                <app-address-autocomplete [label]="'Pick-up address'"
+                                          [placeholder]="'Search for location'"
+                                          [location]="userLocation"
+                                          [lookupAddress]="true"
+                                          [showLatLng]="true"
+                                          (addressChange)="pickUpAddressChanged($event)"></app-address-autocomplete>
+                <app-address-autocomplete [label]="'Drop-off address'"
+                                          [placeholder]="'Search for location'"
+                                          [lookupAddress]="true"
+                                          [showLatLng]="true"
+                                          (addressChange)="dropOffAddressChanged($event)"></app-address-autocomplete>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">&nbsp;</label>
+                    <div *ngIf="distanceMiles"
+                         class="col-md-3">Distance: <strong>{{distanceMiles}}</strong></div>
+                    <div *ngIf="timeFormatted"
+                         class="col-md-3">Time: <strong>{{timeFormatted}}</strong></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <button [disabled]="form.invalid"
+                                type="submit"
+                                class="btn btn-success"
+                                (click)="requestRide()">Request Ride</button>
+                    </div>
+                </div>
+            </form>
+    
+            <agm-map [latitude]='pickUpAddress.latitude'
+                     [longitude]='pickUpAddress.longitude'
+                     [zoom]="16"
+                     (mapClick)="addMarker($event.coords.lat, $event.coords.lng)">
+                <agm-marker [latitude]='pickUpAddress.latitude'
+                            [longitude]='pickUpAddress.longitude'
+                            [iconUrl]="'/assets/icons8-street-view-green-25.png'"></agm-marker>
+                <agm-marker [latitude]='dropOffAddress.latitude'
+                            [longitude]='dropOffAddress.longitude'
+                            [iconUrl]="'/assets/icons8-finish-flag-25.png'"></agm-marker>
+                <agm-direction [origin]="origin"
+                               [destination]="destination"
+                               [renderOptions]="{suppressMarkers: true}"
+                               (onChange)="onChange($event)"
+                               (onResponse)="onResponse($event)"
+                               (status)="getStatus($event)">
+                </agm-direction>
+            </agm-map>
+    
+        </ng-container>
+    </div>

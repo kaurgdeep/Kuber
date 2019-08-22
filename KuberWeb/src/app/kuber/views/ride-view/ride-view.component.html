@@ -1,0 +1,100 @@
+<div class="container">
+        <p></p>
+        <p></p>
+    
+        <div class="row">
+            <ng-container *ngIf="me && me.userType == UserType.Passenger">
+                <div class="col-md-12">
+                    <h2>Ride Status - Passenger</h2>
+                </div>
+                <div *ngIf="!rideResponse?.driverId"
+                     class="col-md-12">
+                    <p><i class="fa fa-spinner fa-spin"></i>&nbsp;
+                        <em>Waiting for a Driver to accept your Ride request.</em></p>
+                    <p>You can cancel your Ride request without incurring any cancellation fees.
+                        <button class="btn btn-warning">Cancel Ride</button></p>
+                </div>
+                <div *ngIf="rideResponse?.rideStatus == RideStatus.Accepted"
+                     class="col-md-12">
+                    <p><i class="fa fa-spinner fa-spin"></i>&nbsp;
+                        <em>
+                            Driver is on their way to pick you up.</em>
+                </div>
+                <div *ngIf="rideResponse?.rideStatus == RideStatus.Rejected"
+                     class="col-md-12">
+                    <em>
+                        Driver rejected your ride.</em>
+                </div>
+                <div *ngIf="rideResponse?.rideStatus == RideStatus.PickedUp"
+                     class="col-md-12">
+                    <p><i class="fa fa-spinner fa-spin"></i>&nbsp;
+                        <em>
+                            Driver picked you up and is driving to destination.</em>
+                </div>
+                <div *ngIf="rideResponse?.rideStatus == RideStatus.DroppedOff"
+                     class="col-md-12">
+                    <em>
+                        Driver dropped you off at your destination.</em>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="me && me.userType == UserType.Driver">
+                <div class="col-md-12">
+                    <h2>Ride Status - Driver</h2>
+                </div>
+            </ng-container>
+    
+            <div class="col-md-12">
+                <app-address-autocomplete [readOnly]="true"
+                                          [label]="'Pick-up address'"
+                                          [location]="pickUpLocation"
+                                          [lookupAddress]="true"
+                                          [showLatLng]="true"></app-address-autocomplete>
+                <app-address-autocomplete *ngIf="rideResponse?.driverId"
+                                          [readOnly]="true"
+                                          [label]="'Current location'"
+                                          [location]="currentLocation"
+                                          [lookupAddress]="me?.userType === UserType.Driver"
+                                          [showLatLng]="true"
+                                          (addressChange)="currentLocationAddressObtained($event)"></app-address-autocomplete>
+                <app-address-autocomplete [readOnly]="true"
+                                          [label]="'Drop-off address'"
+                                          [location]="dropOffLocation"
+                                          [lookupAddress]="true"
+                                          [showLatLng]="true"></app-address-autocomplete>
+            </div>
+    
+            <div class="col-md-12">
+                <agm-map [latitude]='rideResponse?.driverId && !!currentLocation ? currentLocation.latitude : pickUpLocation?.latitude'
+                         [longitude]='rideResponse?.driverId && !!currentLocation ? currentLocation.longitude : pickUpLocation?.longitude'
+                         [zoom]="16">
+                    <agm-marker [latitude]='pickUpLocation?.latitude'
+                                [longitude]='pickUpLocation?.longitude'></agm-marker>
+                    <agm-marker *ngIf="rideResponse?.driverId && currentLocation"
+                                [latitude]='currentLocation.latitude'
+                                [longitude]='currentLocation.longitude'
+                                [iconUrl]="'/assets/icons8-fiat-500-25.png'"></agm-marker>
+                    <agm-marker [latitude]='dropOffLocation?.latitude'
+                                [longitude]='dropOffLocation?.longitude'></agm-marker>
+                </agm-map>
+            </div>
+    
+            <ng-container *ngIf="me?.userType == UserType.Driver">
+                <div class="col-md-12">&nbsp;</div>
+    
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-success"
+                                    (click)="pickUpRide(rideId)">Pick-up Rider(s)</button>&nbsp;&nbsp;
+                            <button class="btn btn-info"
+                                    (click)="dropOffRide(rideId)">Drop-off Rider(s)</button>&nbsp;&nbsp;
+                            <button class="btn btn-danger"
+                                    (click)="rejectRide(rideId)">Reject Ride</button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+    
+        </div>
+    
+    </div>

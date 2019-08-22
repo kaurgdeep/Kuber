@@ -1,4 +1,4 @@
-<form>
+<!-- <form>
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -7,6 +7,16 @@
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary" (click)="register()">Register</button>
 </form>
-<a [routerLink]="['/login']" [queryParams]="{usertype: usertype}">Login here</a>
+<a [routerLink]="['/login']" [queryParams]="{usertype: usertype}">Login here</a> -->
+<div class="container">
+    <h2>Register</h2>
+    <app-credential [busy]="apiCall"
+                    [errorStatus]="errorStatus"
+                    [userType]="userType"
+                    [isRegister]="true"
+                    (registerClick)="register($event)"></app-credential>
+    <p></p>
+    <a [routerLink]="['/login']" [queryParams]="{userType: userType}">Already have an account? Login</a>
+</div>
