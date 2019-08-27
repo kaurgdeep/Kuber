@@ -33,6 +33,7 @@ export class LoginViewComponent implements OnInit {
   }
 
   async login(user: IRegisterUser) {
+    console.log(user);
     this.apiCall = true;
     const response = await this.userService.login(user);
     if (response) {

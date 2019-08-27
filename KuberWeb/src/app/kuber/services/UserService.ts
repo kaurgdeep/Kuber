@@ -5,6 +5,8 @@ import { AuthenticationStore } from './AuthenticationStore';
 import { ITokenResponse } from '../Dtos/Interfaces/ITokenResponse';
 import { IUserInformation } from '../Dtos/Interfaces/IUserInformation';
 import { ApiServiceBase } from './ApiServiceBase';
+import { IRegisterUser } from '../Dtos/Interfaces/IRegisterUser';
+import { ICreateResponse } from '../Dtos/Interfaces/ICreateResponse';
 
 @Injectable()
 export class UserService extends ApiServiceBase {
@@ -19,7 +21,11 @@ export class UserService extends ApiServiceBase {
             payload: user
         });
 
-        // update local storage if we got a token, else clear the local storage (by calling logout)
+        return this.storeToken(authenticationToken);
+        
+    }
+
+    private storeToken(authenticationToken: ITokenResponse){
         if (authenticationToken &&
             authenticationToken.token &&
             authenticationToken.token.length > 0) {
@@ -30,6 +36,11 @@ export class UserService extends ApiServiceBase {
 
         this.logout();
         return false;
+    }
+
+    async create(user: IRegisterUser): Promise<boolean> {
+        const authenticationToken = await super.httpPost<IRegisterUser, ITokenResponse>({ url: 'register', payload: user});
+        return this.storeToken(authenticationToken);
     }
 
     async getMe(): Promise<IUserInformation> {

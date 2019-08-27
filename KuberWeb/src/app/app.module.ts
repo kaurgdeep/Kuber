@@ -24,6 +24,7 @@ import { MapComponent } from './kuber/components/map/map.component';
 import { RideComponent } from './kuber/components/ride/ride.component';
 import { AcceptRideViewComponent } from './kuber/views/accept-ride-view/accept-ride-view.component';
 import { RequestRideViewComponent } from './kuber/views/request-ride-view/request-ride-view.component';
+import { RideService } from './kuber/services/RideService';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { RequestRideViewComponent } from './kuber/views/request-ride-view/reques
   ],
   providers: [
     UserService,
+    RideService,
     AuthenticationStore,
     AuthenticationGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlHttpInterceptor, multi: true },

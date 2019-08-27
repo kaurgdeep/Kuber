@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-const AuthTokenKey = 'rideshareAuthToken';
+const AuthTokenKey = 'KuberAuthToken';
 
 @Injectable()
 export class AuthenticationStore { // todo: move this to storage folder and rename the class to AuthenticationStorage

@@ -12,10 +12,10 @@ namespace KuberAPI.Models
 
         public string FormattedAddress { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,14)")]
         public decimal Latitude { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,14)")]
         public decimal Longitude { get; set; }
 
         //public int AddressId { get; set; }

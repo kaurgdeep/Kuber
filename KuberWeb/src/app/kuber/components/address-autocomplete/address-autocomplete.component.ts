@@ -51,26 +51,27 @@ export class AddressAutocompleteComponent implements OnInit {
       if (this.updateAddressTimerId) {
         clearInterval(this.updateAddressTimerId);
       }
+      if (this.lookupAddress) {
+        this.updateAddressTimerId = setInterval(() => {
+          if (typeof (google) !== 'undefined') {
+            clearInterval(this.updateAddressTimerId);
+            this.updateAddressTimerId = undefined;
 
-      this.updateAddressTimerId = setInterval(() => {
-        if (typeof (google) !== 'undefined') {
-          clearInterval(this.updateAddressTimerId);
-          this.updateAddressTimerId = undefined;
+            this.getAddress(currentLocation.latitude, currentLocation.longitude, (address) => {
+              this.ngZone.run(() => {
 
-          this.getAddress(currentLocation.latitude, currentLocation.longitude, (address) => {
-            this.ngZone.run(() => {
+                this.address.latitude = currentLocation.latitude;
+                this.address.longitude = currentLocation.longitude;
+                this.address.formattedAddress = address;
 
-              this.address.latitude = currentLocation.latitude;
-              this.address.longitude = currentLocation.longitude;
-              this.address.formattedAddress = address;
-
-              this.addressChange.emit(this.address);
+                this.addressChange.emit(this.address);
+              });
             });
-          });
-        }
-      }, 250); // Bumped from 100 to 250 - to temporarily resolve 'UNKNOWN_ERROR' status being returned by geocoder.geocode
-    } else {
-      this.address = changes['location'].currentValue;
+          }
+        }, 250); // Bumped from 100 to 250 - to temporarily resolve 'UNKNOWN_ERROR' status being returned by geocoder.geocode
+      } else {
+        this.address = changes['location'].currentValue;
+      }
     }
   }
 

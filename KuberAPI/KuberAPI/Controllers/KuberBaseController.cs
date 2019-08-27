@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace KuberAPI.Controllers
 {
     [ApiController]
     public abstract class KuberBaseController : ControllerBase
     {
-
         // backing variable.
         private int? userId;
-        protected int? UserId
+        protected int? LoggedInUserId
         {
             get
             {
@@ -37,7 +34,7 @@ namespace KuberAPI.Controllers
         }
 
         private string emailAddress;
-        protected string EmailAddress
+        protected string LoggedInEmailAddress
         {
             get
             {
@@ -58,7 +55,7 @@ namespace KuberAPI.Controllers
         }
 
         private string userType;
-        protected string UserType
+        protected string LoggedInUserType
         {
             get
             {
@@ -85,4 +82,3 @@ namespace KuberAPI.Controllers
 
     }
 }
-

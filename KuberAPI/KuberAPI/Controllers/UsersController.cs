@@ -5,33 +5,45 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using KuberAPI.Dto;
-using KuberAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using KuberAPI.Dto;
+using KuberAPI.Interfaces.Services;
+using KuberAPI.Models;
+using KuberAPI.Responses;
+
+
 
 namespace KuberAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    //[ApiController]
+    [EnableCors(Constants.KuberServerCorsPolicy)]
     public class UsersController : KuberBaseController
     {
         private IConfiguration Configuration;
-        private KuberContext Context;
-        public UsersController(IConfiguration configuration, KuberContext context)
+        private IEntityService<User> UserService;
+
+        public UsersController(IConfiguration configuration, IEntityService<User> userService)
         {
             Configuration = configuration;
-            Context = context;
+            UserService = userService;
         }
 
         // POST api/values
         [HttpPost]
         [Route("register")]
-        public ActionResult Register([FromBody] RegisterUserDto userDto)
+        public ActionResult<TokenResponse> Register([FromBody] RegisterUserDto userDto)
         {
+            if (userDto == null)
+            {
+                return BadRequest("Invalid input");
+            }
+
             try
             {
                 // todo: Hash the password before saving
@@ -42,11 +54,11 @@ namespace KuberAPI.Controllers
                     UserType = userDto.UserType,
                     Created = DateTime.UtcNow
                 };
-                Context.Users.Add(user);
-                Context.SaveChanges();
+                var userId = UserService.Create(user);
+                user.UserId = userId;
+                var token = CreateToken(user);
 
-                // Todo: Authenticate and return the JWT
-                return Ok(new { user.UserId });
+                return Ok(new TokenResponse { Token = new JwtSecurityTokenHandler().WriteToken(token) });
             }
             catch (Exception ex)
             {
@@ -58,6 +70,9 @@ namespace KuberAPI.Controllers
                     ex = ex.InnerException;
                 }
 
+                // Note: These are 2 different ways to return an error result
+                // JsonResult is better because we can send back error information in JSON (just like success)
+                // which makes handling any HTTP calls to API uniform for the clients of the API (like the Web)
                 Response.StatusCode = StatusCodes.Status500InternalServerError;
                 return new JsonResult(new { Error = string.Join("\r\n", messages) });
                 // Note: In production, don't return any more details - return just the status
@@ -68,15 +83,25 @@ namespace KuberAPI.Controllers
         [HttpPost]
         [Route("log-in")]
         [AllowAnonymous]
-        public ActionResult Login([FromBody] UserDto userDto)
+        public ActionResult Login([FromBody] LoginUserDto userDto)
         {
             // todo: hash the input password and check with passwordhash from database
-            var user = Context.Users.Where(u => u.EmailAddress == userDto.EmailAddress.ToLower() && u.PasswordHash == userDto.Password).FirstOrDefault();
+            var user = UserService.Get(u =>
+                u.EmailAddress == userDto.EmailAddress.ToLower() &&
+                u.PasswordHash == userDto.Password &&
+                u.UserType == userDto.UserType);
             if (user == null)
             {
                 return BadRequest("Could not verify username and password");
             }
 
+            var token = CreateToken(user);
+
+            return Ok(new TokenResponse { Token = new JwtSecurityTokenHandler().WriteToken(token) });
+        }
+
+        private JwtSecurityToken CreateToken(User user)
+        {
             var claims = new[] {
                 new Claim(Constants.EmailAddress, user.EmailAddress),
                 new Claim(Constants.UserId, user.UserId.ToString()),
@@ -87,17 +112,15 @@ namespace KuberAPI.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "rideshare.com",
-                audience: "rideshare.com",
+                issuer: "kuber.com",
+                audience: "kuber.com",
                 claims: claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
-
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token)
-            });
+            return token;
         }
+
+
 
         // Note: This is just an endpoint to test if authentication succeeded. 
         // We may not may not use it in our Web application
@@ -106,16 +129,11 @@ namespace KuberAPI.Controllers
         [Authorize]
         public ActionResult Me()
         {
-            return Ok(new
+            return Ok(new MeResponse
             {
-                Data = new
-                {
-                    // note: we are using inferred type names - a new C# feature
-                    // so instead of new { UserId = base.UserId, EmailAddres = base.EmailAddress, UserType = base.UserType }
-                    base.UserId,
-                    base.EmailAddress,
-                    base.UserType
-                }
+                UserId = LoggedInUserId,
+                EmailAddress = LoggedInEmailAddress,
+                UserType = LoggedInUserType
             });
         }
     }

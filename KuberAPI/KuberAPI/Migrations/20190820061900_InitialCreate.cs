@@ -15,8 +15,8 @@ namespace KuberAPI.Migrations
                     AddressId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FormattedAddress = table.Column<string>(nullable: true),
-                    Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Longitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Latitude = table.Column<decimal>(type: "decimal(18,14)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(18,14)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,13 +52,17 @@ namespace KuberAPI.Migrations
                     DriverId = table.Column<int>(nullable: true),
                     FromAddressId = table.Column<int>(nullable: false),
                     ToAddressId = table.Column<int>(nullable: false),
+                    CurrentAddress = table.Column<string>(nullable: true),
+                    CurrentLatitude = table.Column<decimal>(type: "decimal(18,14)", nullable: true),
+                    CurrentLongitude = table.Column<decimal>(type: "decimal(18,14)", nullable: true),
                     RideStatus = table.Column<int>(nullable: false),
                     Requested = table.Column<DateTime>(nullable: false),
                     Cancelled = table.Column<DateTime>(nullable: true),
                     Accepted = table.Column<DateTime>(nullable: true),
                     Rejected = table.Column<DateTime>(nullable: true),
                     PickedUp = table.Column<DateTime>(nullable: true),
-                    DroppedOff = table.Column<DateTime>(nullable: true)
+                    DroppedOff = table.Column<DateTime>(nullable: true),
+                    PositionUpdated = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

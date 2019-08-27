@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UserType } from '../../Dtos/Enums/UserType';
 import { IRegisterUser } from '../../Dtos/Interfaces/IRegisterUser';
+import { UserService } from '../../services/UserService';
 
 
 @Component({
@@ -31,27 +32,27 @@ export class RegisterViewComponent implements OnInit {
   apiCall: boolean;
   errorStatus: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private httpClient: HttpClient) { }
+  constructor(private activatedRoute: ActivatedRoute, public router: Router, private userService: UserService ) { }
 
   ngOnInit() {
     this.userType = UserType[this.activatedRoute.snapshot.queryParamMap.get('userType')];
   }
 
   async register(user: IRegisterUser) {
-    const promise = new Promise((resolve, reject) => {
-      this.httpClient.post('/api/users/register', user)
-        .subscribe((data) => resolve(data),
-          (reason) => reject(reason));
-    });
-
-    try {
-      this.apiCall = true;
-      const response = await promise;
-      console.log(response);
-    } catch (e) {
-      this.errorStatus = 'Error registering the user';
-    } finally {
+    const response = await this.userService.create(user);
+    console.log(response);
+    if (response) {
+      //this.status = 'Login succeeded! Redirecting to home page';
+      setTimeout(() => {
+        console.log('Redirecting to home', JSON.stringify(localStorage));
+        this.router.navigate(['/']);
+      }, 100);
+    } else {
       this.apiCall = false;
+      this.errorStatus = 'Login failed';
     }
+
+    
+    
   }
 }

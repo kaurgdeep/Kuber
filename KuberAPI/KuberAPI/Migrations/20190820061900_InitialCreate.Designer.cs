@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KuberAPI.Migrations
 {
     [DbContext(typeof(KuberContext))]
-    [Migration("20190806040135_InitialCreate")]
+    [Migration("20190820061900_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,10 +30,10 @@ namespace KuberAPI.Migrations
                     b.Property<string>("FormattedAddress");
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,14)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,14)");
 
                     b.HasKey("AddressId");
 
@@ -50,6 +50,14 @@ namespace KuberAPI.Migrations
 
                     b.Property<DateTime?>("Cancelled");
 
+                    b.Property<string>("CurrentAddress");
+
+                    b.Property<decimal?>("CurrentLatitude")
+                        .HasColumnType("decimal(18,14)");
+
+                    b.Property<decimal?>("CurrentLongitude")
+                        .HasColumnType("decimal(18,14)");
+
                     b.Property<int?>("DriverId");
 
                     b.Property<DateTime?>("DroppedOff");
@@ -59,6 +67,8 @@ namespace KuberAPI.Migrations
                     b.Property<int>("PassengerId");
 
                     b.Property<DateTime?>("PickedUp");
+
+                    b.Property<DateTime?>("PositionUpdated");
 
                     b.Property<DateTime?>("Rejected");
 

@@ -7,6 +7,8 @@ namespace KuberAPI
 {
     public static class Constants
     {
+        public const string KuberServerCorsPolicy = "RideshareServerCorsPolicy";
+
         // Configuration keys
         public static string JWTSecurityKey = "SecurityKey";
         public static string DbConnection = "DbConnection";

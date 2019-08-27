@@ -36,14 +36,16 @@ export class CredentialsComponent implements OnInit {
   register() {
       this.registerClick.emit({ 
       emailAddress: this.vm.emailAddress, 
-      password: this.vm.emailAddress 
+      password: this.vm.password,
+      userType: this.userType
     });
   }
 
   login() {
       this.loginClick.emit({ 
       emailAddress: this.vm.emailAddress, 
-      password: this.vm.emailAddress 
+      password: this.vm.password,
+      userType: this.userType
     });
   }
 
