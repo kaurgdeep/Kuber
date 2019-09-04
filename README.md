@@ -1,10 +1,6 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/37717564/64203536-7f497b00-ce48-11e9-9b15-eadd69e84061.png">
 </p>
-
-
-
-
 # Kuber 
 Kuber is a ridesharing web application connect drivers and passengers. Passenger can request a ride and nearby driver accepts your request, your Kuber displays the driver heading to your pickup location.    
 
@@ -26,10 +22,10 @@ Screenshots  | Description
 ![image](https://user-images.githubusercontent.com/37717564/64224462-7d091000-ce8c-11e9-8ee1-61e6efa34084.png)  | RideStatus DriverSide
 ![image](https://user-images.githubusercontent.com/37717564/64224499-aa55be00-ce8c-11e9-884b-bdf115597d14.png)  | Driver Homepage                                                                                                                         showing rides
 ![image](https://user-images.githubusercontent.com/37717564/64224564-dd984d00-ce8c-11e9-87b2-83d9ded09277.png)  | RideStatus                                                                                                                               PassengerSide
-# Clone this repository
+**Clone this repository**
 $ git clone https://github.com/kaurgdeep/Kuber.git
 
-# Go into the repository
+**Go into the repository**
  cd Kuber
  
 ### Install dependencies
