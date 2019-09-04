@@ -27,21 +27,18 @@ Screenshots  | Description
 ![image](https://user-images.githubusercontent.com/37717564/64224499-aa55be00-ce8c-11e9-884b-bdf115597d14.png)  | Driver Homepage                                                                                                                         showing rides
 ![image](https://user-images.githubusercontent.com/37717564/64224564-dd984d00-ce8c-11e9-87b2-83d9ded09277.png)  | RideStatus                                                                                                                               PassengerSide
 # Clone this repository
-$ git clone 
+$ git clone https://github.com/kaurgdeep/Kuber.git
 
 # Go into the repository
-$ cd 
+ cd Kuber
+ 
+### Install dependencies
+#### $ npm install
 
-# Install dependencies
-# $ npm install
-
-# Run the app
-$ npm start
+### Run the app
+cd kuberWeb
+ng serve
 Note: If you're using Linux Bash for Windows, see this guide or use node from the command prompt.
-
-Download
-You can download the latest installable version of Markdownify for Windows, macOS and Linux.
-
 
 Credits
 This software uses the following open source packages:
