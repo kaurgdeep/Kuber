@@ -4,7 +4,7 @@
 
 
 # Kuber 
-Kuber is a ridesharing web application connect drivers and passengers. Passenger can request a ride and nearby driver accepts your request, your Kuber displays the driver heading to your pickup location.    
+Kuber is a ridesharing web application connect drivers and passengers. Passenger can request a ride and nearby driver accepts your request, Kuber displays the driver heading to passenger's pickup location and droppedoff to the passenger's destination. 
 
 **Key Features** 
 ------------------
