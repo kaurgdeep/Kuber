@@ -23,6 +23,23 @@ Screenshots  | Description
 ![image](https://user-images.githubusercontent.com/37717564/64232487-e72eae80-cea6-11e9-9355-ea0b8054e877.png)  | Driver will accept                                                                                                                       ride and page will                                                                                                                       display the directions                                                                                                                   to pick-up addres.                                                                                                                       After accept the ride                                                                                                                   driver has option to                                                                                                                     dropoff the passenger                                                                                                                   or rejectride before                                                                                                                     pick-up.
 ![image](https://user-images.githubusercontent.com/37717564/64224405-2dc2df80-ce8c-11e9-80ac-56deae076693.png)  | Passenger-side will                                                                                                                     also display that                                                                                                                       driver accepted the                                                                                                                     ride and on the way to                                                                                                                   pick-up.
 ![image](https://user-images.githubusercontent.com/37717564/64224251-b2f9c480-ce8b-11e9-8cb5-e0a65ed379fe.png)  | After reached at                                                                                                                         destination will                                                                                                                         display droppedoff                                                                                                                       status.
+**Technologies Used**
+* Angular
+* Google Map
+* Bootstrap
+
+
+**Server Side**
+* ASP.NET Core
+* Entity Freamework
+
+
+**Model**
+* User: Two types of User
+    * Passenger
+    * Driver
+* Ride
+* Address
 
 
 **Clone this repository**
@@ -40,12 +57,7 @@ $ npm install
 
 cd kuberWeb
 ng serve
-Note: If you're using Linux Bash for Windows, see this guide or use node from the command prompt.
+cd kuberAPI
+Go to solution and run
 
-**Credits**
 
-This software uses the following open source packages:
-
-**License**
-
-kaurgdeep4@gmail.com 
